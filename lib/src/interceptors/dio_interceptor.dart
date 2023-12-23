@@ -18,6 +18,9 @@ class DioInterceptor extends Interceptor with Recording, RequestHandling {
 
   final bool printLogs;
 
+  ///Whether to call your existing error interceptors after rejecting the mocked request
+  final bool callFollowingErrorInterceptor;
+
   @override
   final bool failOnMissingMock;
 
@@ -27,6 +30,7 @@ class DioInterceptor extends Interceptor with Recording, RequestHandling {
     this.matcher = const FullHttpRequestMatcher(),
     this.printLogs = false,
     this.failOnMissingMock = true,
+    this.callFollowingErrorInterceptor = false,
   }) {
     dio.interceptors.add(this);
     logger = getLogger(printLogs);
@@ -48,7 +52,7 @@ class DioInterceptor extends Interceptor with Recording, RequestHandling {
     if (isMockDioException(response)) {
       requestInterceptorHandler.reject(
         response as DioException,
-        true,
+        callFollowingErrorInterceptor,
       );
 
       return;
