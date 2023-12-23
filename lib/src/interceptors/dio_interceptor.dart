@@ -46,7 +46,10 @@ class DioInterceptor extends Interceptor with Recording, RequestHandling {
 
     // Reject the response if type is MockDioException.
     if (isMockDioException(response)) {
-      requestInterceptorHandler.reject(response as DioException);
+      requestInterceptorHandler.reject(
+        response as DioException,
+        true,
+      );
 
       return;
     }
