@@ -57,7 +57,8 @@ class DioInterceptor extends Interceptor with Recording, RequestHandling {
 
       return;
     }
-
+    // Waits for defined duration.
+    if (response.delay != null) await Future.delayed(response.delay!);
     final responseBody = response as MockResponseBody;
 
     requestInterceptorHandler.resolve(
